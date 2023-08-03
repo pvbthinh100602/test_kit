@@ -42,7 +42,6 @@ void led7Scan(){
 		  HAL_GPIO_WritePin(LD_LED4_GPIO_Port, LD_LED4_Pin, 0);
 		  break;
 	}
-
 	led7_index = (led7_index + 1)%4;
 }
 
