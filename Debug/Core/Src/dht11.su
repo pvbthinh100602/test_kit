@@ -1,0 +1,8 @@
+dht11.c:16:13:DHT_SetPinOut	32	static
+dht11.c:24:13:DHT_SetPinIn	32	static
+dht11.c:33:16:DHT_ReadPin	16	static
+dht11.c:40:16:DHT_Start	16	static
+dht11.c:63:16:DHT_Read	16	static
+dht11.c:81:9:DHT_ReadTempHum	24	static
+dht11.c:98:7:DHT_GetTemp	4	static
+dht11.c:102:7:DHT_GetHumi	4	static

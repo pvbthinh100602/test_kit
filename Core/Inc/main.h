@@ -37,11 +37,20 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
+
+I2C_HandleTypeDef hi2c1;
+
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim13;
 
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+char str[100];
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -54,11 +63,13 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void delay_us(uint16_t us);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -82,6 +93,8 @@ void Error_Handler(void);
 #define BTN_LOAD_GPIO_Port GPIOD
 #define LD_COLON_Pin GPIO_PIN_6
 #define LD_COLON_GPIO_Port GPIOD
+#define ONE_WIRE_Pin GPIO_PIN_9
+#define ONE_WIRE_GPIO_Port GPIOG
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

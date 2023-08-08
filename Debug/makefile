@@ -65,7 +65,7 @@ main-build: test_kit.elf secondary-outputs
 
 # Tool invocations
 test_kit.elf: $(OBJS) $(USER_OBJS) D:\abc\stm32\test_kit\STM32F407ZETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "test_kit.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\abc\stm32\test_kit\STM32F407ZETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="test_kit.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "test_kit.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\abc\stm32\test_kit\STM32F407ZETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="test_kit.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

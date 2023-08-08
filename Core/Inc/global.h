@@ -12,5 +12,8 @@
 #include "led7.h"
 #include "timer.h"
 #include "button.h"
+#include "dht11.h"
+#include "ds3231.h"
+#include "utils.h"
 
 #endif /* INC_GLOBAL_H_ */

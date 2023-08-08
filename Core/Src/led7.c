@@ -12,6 +12,14 @@ unsigned char led7[4] = {0x00, 0xf1, 0x0e, 0x6a};
 
 int led7_index = 0;
 
+void led7_init(){
+	  HAL_GPIO_WritePin(LD_LED1_GPIO_Port, LD_LED1_Pin, 0);
+	  HAL_GPIO_WritePin(LD_LED2_GPIO_Port, LD_LED2_Pin, 0);
+	  HAL_GPIO_WritePin(LD_LED3_GPIO_Port, LD_LED3_Pin, 0);
+	  HAL_GPIO_WritePin(LD_LED4_GPIO_Port, LD_LED4_Pin, 0);
+	  HAL_GPIO_WritePin(LD_LATCH_GPIO_Port, LD_LATCH_Pin, 1);
+}
+
 void led7Scan(){
 	HAL_GPIO_WritePin(LD_LATCH_GPIO_Port, LD_LATCH_Pin, 0);
 	HAL_SPI_Transmit(&hspi1, led7 + led7_index, 1, 1);
@@ -53,7 +61,7 @@ void led7Set1Digit(int num, int position){
 		digit = 0x03;
 		break;
 	case 1:
-		digit = 0x9e;
+		digit = 0x9f;
 		break;
 	case 2:
 		digit = 0x25;

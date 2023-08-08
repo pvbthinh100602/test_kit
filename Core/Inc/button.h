@@ -13,5 +13,6 @@
 extern unsigned char button_count[8];
 
 void button_scan();
+void button_test();
 
 #endif /* INC_BUTTON_H_ */

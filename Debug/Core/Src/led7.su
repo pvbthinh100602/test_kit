@@ -1,2 +1,3 @@
-led7.c:15:6:led7Scan	8	static
-led7.c:48:6:led7Set1Digit	24	static
+led7.c:15:6:led7_init	8	static
+led7.c:23:6:led7Scan	8	static
+led7.c:56:6:led7Set1Digit	24	static
