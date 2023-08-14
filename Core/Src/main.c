@@ -28,6 +28,8 @@
 #include "dht11.h"
 #include "ds3231.h"
 #include "pwm.h"
+#include "lcd.h"
+#include "gui.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -60,6 +62,8 @@ TIM_HandleTypeDef htim13;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
+SRAM_HandleTypeDef hsram1;
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -76,6 +80,7 @@ static void MX_TIM3_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM13_Init(void);
+static void MX_FSMC_Init(void);
 /* USER CODE BEGIN PFP */
 void test_output();
 /* USER CODE END PFP */
@@ -83,7 +88,17 @@ void test_output();
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-
+void DrawTestPage(uint8_t *str)
+{
+	//»æÖÆ¹Ì¶¨À¸up
+	LCD_Fill(0,0,lcddev.width,20,BLUE);
+	//»æÖÆ¹Ì¶¨À¸down
+	LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
+	Gui_StrCenter(0,2,str,WHITE,BLUE,16,1);//¾ÓÖÐÏÔÊ¾
+	Gui_StrCenter(0,lcddev.height-18,"ÖÐ¾°Ô°°æÈ¨ËùÓÐ ",WHITE,BLUE,16,1);//¾ÓÖÐÏÔÊ¾
+	//»æÖÆ²âÊÔÇøÓò
+	LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
+}
 
 /* USER CODE END 0 */
 
@@ -124,25 +139,67 @@ int main(void)
   MX_I2C1_Init();
   MX_USART2_UART_Init();
   MX_TIM13_Init();
+  MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
+  HAL_Delay(1000);
+  HAL_SRAM_WriteOperation_Enable(&hsram1);
   timer_init();
   pwm_init();
   button_init();
   led7_init();
   ADC_Init();
   UART_Init();
+  LCD_Init();
   ds3231_init();
+  LCD_Clear(WHITE);
   HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
+  HAL_GPIO_WritePin(FSMC_BLK_GPIO_Port, FSMC_BLK_Pin, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // reset LCD
+
+  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_RESET);
+
+  HAL_Delay(500);
+
+  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_SET);
+
+
+
+  //read
+  unsigned char s[50];
+//  uint16_t tmp = 0x00; //0000 is the code, see ILI9325 manual for details
+////  HAL_SRAM_Write_16b(&hsram1, &LCD_Reg_Addr, &tmp,2);
+//  LCD_WriteIndex(0xd3);
+//
+////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
+//  tmp = LCD_ReadData();
+//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
+//  tmp = LCD_ReadData();
+////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
+//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
+//  tmp = LCD_ReadData();
+////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
+//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
+//  tmp = LCD_ReadData();
+////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
+//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
+
+  HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "%x, %x\n", &LCD->LCD_RAM, &LCD->LCD_REG), 10);
+  HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "id: %x\n", lcddev.id), 10);
+
+//  LCD_WriteIndex(0x3d);
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 	  while(!flag_timer2);
+	  LCD_Fill(0,0,lcddev.width,20,BLUE);
+	  LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
 	  button_scan();
 	  test_output();
 	  time_display();
@@ -151,6 +208,7 @@ int main(void)
 	  setTimer2(50);
 	  if(flag_timer1){
 		  setTimer1(1000);
+		  DrawTestPage("Hello");
 		  HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
 		  read_time();
 		  test_adc();
@@ -194,7 +252,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
@@ -577,16 +635,19 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOE_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, DEBUG_LED_Pin|OUTPUT_Y0_Pin|OUTPUT_Y1_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LD_LED3_Pin|LD_LED1_Pin|LD_LED4_Pin, GPIO_PIN_RESET);
@@ -598,6 +659,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOG, LD_LATCH_Pin|ONE_WIRE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(FSMC_BLK_GPIO_Port, FSMC_BLK_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, BTN_LOAD_Pin|LD_COLON_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : DEBUG_LED_Pin OUTPUT_Y0_Pin OUTPUT_Y1_Pin */
@@ -606,6 +670,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : FSMC_RES_Pin */
+  GPIO_InitStruct.Pin = FSMC_RES_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(FSMC_RES_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LD_LED3_Pin LD_LED1_Pin LD_LED4_Pin */
   GPIO_InitStruct.Pin = LD_LED3_Pin|LD_LED1_Pin|LD_LED4_Pin;
@@ -628,6 +699,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : FSMC_BLK_Pin */
+  GPIO_InitStruct.Pin = FSMC_BLK_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(FSMC_BLK_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : BTN_LOAD_Pin LD_COLON_Pin */
   GPIO_InitStruct.Pin = BTN_LOAD_Pin|LD_COLON_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -635,6 +713,67 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+}
+
+/* FSMC initialization function */
+static void MX_FSMC_Init(void)
+{
+
+  /* USER CODE BEGIN FSMC_Init 0 */
+
+  /* USER CODE END FSMC_Init 0 */
+
+  FSMC_NORSRAM_TimingTypeDef Timing = {0};
+  FSMC_NORSRAM_TimingTypeDef ExtTiming = {0};
+
+  /* USER CODE BEGIN FSMC_Init 1 */
+
+  /* USER CODE END FSMC_Init 1 */
+
+  /** Perform the SRAM1 memory initialization sequence
+  */
+  hsram1.Instance = FSMC_NORSRAM_DEVICE;
+  hsram1.Extended = FSMC_NORSRAM_EXTENDED_DEVICE;
+  /* hsram1.Init */
+  hsram1.Init.NSBank = FSMC_NORSRAM_BANK1;
+  hsram1.Init.DataAddressMux = FSMC_DATA_ADDRESS_MUX_DISABLE;
+  hsram1.Init.MemoryType = FSMC_MEMORY_TYPE_SRAM;
+  hsram1.Init.MemoryDataWidth = FSMC_NORSRAM_MEM_BUS_WIDTH_16;
+  hsram1.Init.BurstAccessMode = FSMC_BURST_ACCESS_MODE_DISABLE;
+  hsram1.Init.WaitSignalPolarity = FSMC_WAIT_SIGNAL_POLARITY_LOW;
+  hsram1.Init.WrapMode = FSMC_WRAP_MODE_DISABLE;
+  hsram1.Init.WaitSignalActive = FSMC_WAIT_TIMING_BEFORE_WS;
+  hsram1.Init.WriteOperation = FSMC_WRITE_OPERATION_ENABLE;
+  hsram1.Init.WaitSignal = FSMC_WAIT_SIGNAL_DISABLE;
+  hsram1.Init.ExtendedMode = FSMC_EXTENDED_MODE_ENABLE;
+  hsram1.Init.AsynchronousWait = FSMC_ASYNCHRONOUS_WAIT_DISABLE;
+  hsram1.Init.WriteBurst = FSMC_WRITE_BURST_DISABLE;
+  hsram1.Init.PageSize = FSMC_PAGE_SIZE_NONE;
+  /* Timing */
+  Timing.AddressSetupTime = 6;
+  Timing.AddressHoldTime = 0x00;
+  Timing.DataSetupTime = 26;
+  Timing.BusTurnAroundDuration = 0x00;
+  Timing.CLKDivision = 0x00;
+  Timing.DataLatency = 0x00;
+  Timing.AccessMode = FSMC_ACCESS_MODE_A;
+  /* ExtTiming */
+  ExtTiming.AddressSetupTime = 4;
+  ExtTiming.AddressHoldTime = 0x00;
+  ExtTiming.DataSetupTime = 3;
+  ExtTiming.BusTurnAroundDuration = 0x00;
+  ExtTiming.CLKDivision = 0x00;
+  ExtTiming.DataLatency = 0x00;
+  ExtTiming.AccessMode = FSMC_ACCESS_MODE_A;
+
+  if (HAL_SRAM_Init(&hsram1, &Timing, &ExtTiming) != HAL_OK)
+  {
+    Error_Handler( );
+  }
+
+  /* USER CODE BEGIN FSMC_Init 2 */
+
+  /* USER CODE END FSMC_Init 2 */
 }
 
 /* USER CODE BEGIN 4 */

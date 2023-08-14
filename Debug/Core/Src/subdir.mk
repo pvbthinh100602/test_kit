@@ -10,7 +10,8 @@ C_SRCS += \
 ../Core/Src/dht11.c \
 ../Core/Src/ds3231.c \
 ../Core/Src/global.c \
-../Core/Src/i2c.c \
+../Core/Src/gui.c \
+../Core/Src/lcd.c \
 ../Core/Src/led7.c \
 ../Core/Src/main.c \
 ../Core/Src/pwm.c \
@@ -29,7 +30,8 @@ OBJS += \
 ./Core/Src/dht11.o \
 ./Core/Src/ds3231.o \
 ./Core/Src/global.o \
-./Core/Src/i2c.o \
+./Core/Src/gui.o \
+./Core/Src/lcd.o \
 ./Core/Src/led7.o \
 ./Core/Src/main.o \
 ./Core/Src/pwm.o \
@@ -48,7 +50,8 @@ C_DEPS += \
 ./Core/Src/dht11.d \
 ./Core/Src/ds3231.d \
 ./Core/Src/global.d \
-./Core/Src/i2c.d \
+./Core/Src/gui.d \
+./Core/Src/lcd.d \
 ./Core/Src/led7.d \
 ./Core/Src/main.d \
 ./Core/Src/pwm.d \

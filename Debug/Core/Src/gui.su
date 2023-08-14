@@ -1,0 +1,5 @@
+gui.c:18:6:GUI_DrawPoint	16	static
+gui.c:31:6:_draw_circle_8	24	static
+gui.c:58:6:gui_circle	48	static
+gui.c:107:6:Show_Str	56	static
+gui.c:160:6:Gui_StrCenter	48	static

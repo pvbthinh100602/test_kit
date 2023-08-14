@@ -1,0 +1,7 @@
+lcd_os.c:115:9:LCD_OS_Initialize	24	static
+lcd_os.c:130:9:LCD_OS_Lock	16	static
+lcd_os.c:142:9:LCD_OS_Unlock	16	static
+lcd_os.c:153:9:LCD_OS_UnlockFromISR	16	static
+lcd_os.c:166:9:LCD_OS_TryLock	24	static
+lcd_os.c:198:9:LCD_OS_IsLocked	16	static
+lcd_os.c:208:9:LCD_OS_WaitForTransferToBeDone	16	static

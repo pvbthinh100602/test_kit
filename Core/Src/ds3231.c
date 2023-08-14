@@ -82,10 +82,10 @@ void fsm_GetTime(){
 
 
 void ds3231_init(){
+	tranBuffer[0] = DEC2BCD(00);
+	tranBuffer[1] = DEC2BCD(9);
+	tranBuffer[2] = DEC2BCD(10);
 	updateTime();
-//	tranBuffer[0] = DEC2BCD(00);
-//	tranBuffer[1] = DEC2BCD(9);
-//	tranBuffer[2] = DEC2BCD(10);
 	tranBuffer[3] = DEC2BCD(5);
 	tranBuffer[4] = DEC2BCD(3);
 	tranBuffer[5] = DEC2BCD(8);

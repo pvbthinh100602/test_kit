@@ -1,0 +1,2 @@
+app_touchgfx.c:59:6:MX_TouchGFX_Init	8	static
+app_touchgfx.c:69:6:MX_TouchGFX_Process	8	static

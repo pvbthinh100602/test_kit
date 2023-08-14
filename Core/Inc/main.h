@@ -79,6 +79,8 @@ void delay_us(uint16_t us);
 #define OUTPUT_Y0_GPIO_Port GPIOE
 #define OUTPUT_Y1_Pin GPIO_PIN_6
 #define OUTPUT_Y1_GPIO_Port GPIOE
+#define FSMC_RES_Pin GPIO_PIN_13
+#define FSMC_RES_GPIO_Port GPIOC
 #define LD_LED3_Pin GPIO_PIN_2
 #define LD_LED3_GPIO_Port GPIOB
 #define LD_LED2_Pin GPIO_PIN_11
@@ -89,6 +91,8 @@ void delay_us(uint16_t us);
 #define LD_LED4_GPIO_Port GPIOB
 #define LD_LATCH_Pin GPIO_PIN_6
 #define LD_LATCH_GPIO_Port GPIOG
+#define FSMC_BLK_Pin GPIO_PIN_8
+#define FSMC_BLK_GPIO_Port GPIOA
 #define BTN_LOAD_Pin GPIO_PIN_3
 #define BTN_LOAD_GPIO_Port GPIOD
 #define LD_COLON_Pin GPIO_PIN_6
