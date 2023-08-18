@@ -29,7 +29,6 @@
 #include "ds3231.h"
 #include "pwm.h"
 #include "lcd.h"
-#include "gui.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -87,19 +86,17 @@ void test_output();
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 void DrawTestPage(uint8_t *str)
 {
-	//»æÖÆ¹Ì¶¨À¸up
-	LCD_Fill(0,0,lcddev.width,20,BLUE);
-	//»æÖÆ¹Ì¶¨À¸down
-	LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
-	Gui_StrCenter(0,2,str,WHITE,BLUE,16,1);//¾ÓÖÐÏÔÊ¾
-	Gui_StrCenter(0,lcddev.height-18,"ÖÐ¾°Ô°°æÈ¨ËùÓÐ ",WHITE,BLUE,16,1);//¾ÓÖÐÏÔÊ¾
-	//»æÖÆ²âÊÔÇøÓò
-	LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
+//»æÖÆ¹Ì¶¨À¸up
+LCD_Fill(0,0,lcddev.width,20,BLUE);
+//»æÖÆ¹Ì¶¨À¸down
+LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
+Gui_StrCenter(0,2,str,WHITE,BLUE,16,1);//¾ÓÖ�?�?ÔÊ¾
+Gui_StrCenter(0,lcddev.height-18,"Test page",WHITE,BLUE,16,1);//¾ÓÖ�?�?ÔÊ¾
+//»æÖÆ²âÊÔÇøÓò
+LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
 }
-
 /* USER CODE END 0 */
 
 /**
@@ -142,29 +139,30 @@ int main(void)
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
   HAL_Delay(1000);
-  HAL_SRAM_WriteOperation_Enable(&hsram1);
+//  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_SET);
   timer_init();
   pwm_init();
   button_init();
   led7_init();
   ADC_Init();
   UART_Init();
+  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_RESET);
+  HAL_Delay(500);
+  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_SET);
+  HAL_Delay(500);
   LCD_Init();
+
   ds3231_init();
   LCD_Clear(WHITE);
   HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
-  HAL_GPIO_WritePin(FSMC_BLK_GPIO_Port, FSMC_BLK_Pin, 1);
+//  HAL_GPIO_WritePin(FSMC_BLK_GPIO_Port, FSMC_BLK_Pin, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   // reset LCD
 
-  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_RESET);
 
-  HAL_Delay(500);
-
-  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_SET);
 
 
 
@@ -190,7 +188,7 @@ int main(void)
   HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "%x, %x\n", &LCD->LCD_RAM, &LCD->LCD_REG), 10);
   HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "id: %x\n", lcddev.id), 10);
 
-//  LCD_WriteIndex(0x3d);
+//  DrawTestPage("hello");
 
   while (1)
   {
@@ -198,9 +196,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  while(!flag_timer2);
-	  LCD_Fill(0,0,lcddev.width,20,BLUE);
-	  LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
 	  button_scan();
+	  DrawTestPage("hello");
 	  test_output();
 	  time_display();
 	  button_test();
@@ -208,7 +205,7 @@ int main(void)
 	  setTimer2(50);
 	  if(flag_timer1){
 		  setTimer1(1000);
-		  DrawTestPage("Hello");
+//		  DrawTestPage("Hello");
 		  HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
 		  read_time();
 		  test_adc();
@@ -252,7 +249,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
@@ -470,7 +467,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 72-1;
+  htim3.Init.Prescaler = 71;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 0xffff-1;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -674,7 +671,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : FSMC_RES_Pin */
   GPIO_InitStruct.Pin = FSMC_RES_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(FSMC_RES_GPIO_Port, &GPIO_InitStruct);
 
@@ -702,8 +699,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : FSMC_BLK_Pin */
   GPIO_InitStruct.Pin = FSMC_BLK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(FSMC_BLK_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : BTN_LOAD_Pin LD_COLON_Pin */
@@ -750,20 +747,20 @@ static void MX_FSMC_Init(void)
   hsram1.Init.WriteBurst = FSMC_WRITE_BURST_DISABLE;
   hsram1.Init.PageSize = FSMC_PAGE_SIZE_NONE;
   /* Timing */
-  Timing.AddressSetupTime = 6;
-  Timing.AddressHoldTime = 0x00;
-  Timing.DataSetupTime = 26;
+  Timing.AddressSetupTime = 0x0f;
+  Timing.AddressHoldTime = 15;
+  Timing.DataSetupTime = 60;
   Timing.BusTurnAroundDuration = 0x00;
-  Timing.CLKDivision = 0x00;
-  Timing.DataLatency = 0x00;
+  Timing.CLKDivision = 16;
+  Timing.DataLatency = 17;
   Timing.AccessMode = FSMC_ACCESS_MODE_A;
   /* ExtTiming */
-  ExtTiming.AddressSetupTime = 4;
-  ExtTiming.AddressHoldTime = 0x00;
-  ExtTiming.DataSetupTime = 3;
-  ExtTiming.BusTurnAroundDuration = 0x00;
-  ExtTiming.CLKDivision = 0x00;
-  ExtTiming.DataLatency = 0x00;
+  ExtTiming.AddressSetupTime = 9;
+  ExtTiming.AddressHoldTime = 15;
+  ExtTiming.DataSetupTime = 8;
+  ExtTiming.BusTurnAroundDuration = 0;
+  ExtTiming.CLKDivision = 16;
+  ExtTiming.DataLatency = 17;
   ExtTiming.AccessMode = FSMC_ACCESS_MODE_A;
 
   if (HAL_SRAM_Init(&hsram1, &Timing, &ExtTiming) != HAL_OK)
@@ -772,7 +769,6 @@ static void MX_FSMC_Init(void)
   }
 
   /* USER CODE BEGIN FSMC_Init 2 */
-
   /* USER CODE END FSMC_Init 2 */
 }
 
