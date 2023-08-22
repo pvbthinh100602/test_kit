@@ -767,10 +767,9 @@ void init_system(){
 	button_init();
 	led7_init();
 	adc_init();
-	UART_Init();
+	uart_init();
 	LCD_Init();
 	rtc_init();
-	LCD_Clear(WHITE);
 	HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
 }
 /* USER CODE END 4 */

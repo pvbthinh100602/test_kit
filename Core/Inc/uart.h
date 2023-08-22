@@ -12,7 +12,7 @@
 
 extern unsigned char receive_buffer1, receive_buffer2;
 
-void UART_Init();
-void UART_SendString(unsigned char* str, int size);
+void uart_init();
+void uart_SendString(UART_HandleTypeDef *huart, uint8_t* str);
 
 #endif /* INC_UART_H_ */
