@@ -96,10 +96,10 @@ void rtc_init(){
 }
 
 void rtc_Display7Seg(){
-	  led7Set1Digit(DS3231_TimeNow.hours/10, 1);
-	  led7Set1Digit(DS3231_TimeNow.hours%10, 2);
-	  led7Set1Digit(DS3231_TimeNow.min/10, 3);
-	  led7Set1Digit(DS3231_TimeNow.min%10, 4);
+	  led7_SetDigit(DS3231_TimeNow.hours/10, 1);
+	  led7_SetDigit(DS3231_TimeNow.hours%10, 2);
+	  led7_SetDigit(DS3231_TimeNow.min/10, 3);
+	  led7_SetDigit(DS3231_TimeNow.min%10, 4);
 }
 
 void rtc_Read(){

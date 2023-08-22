@@ -29,23 +29,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  12 .ARM.attributes 00000030  00000000  00000000  000301e4  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00026123  00000000  00000000  00030214  2**0
+ 13 .debug_info   00026067  00000000  00000000  00030214  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00003efb  00000000  00000000  00056337  2**0
+ 14 .debug_abbrev 00003ebf  00000000  00000000  0005627b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00001738  00000000  00000000  0005a238  2**3
+ 15 .debug_aranges 00001738  00000000  00000000  0005a140  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_ranges 000015c8  00000000  00000000  0005b970  2**3
+ 16 .debug_ranges 000015c8  00000000  00000000  0005b878  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  000267a6  00000000  00000000  0005cf38  2**0
+ 17 .debug_macro  000267a6  00000000  00000000  0005ce40  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001d47d  00000000  00000000  000836de  2**0
+ 18 .debug_line   0001d47d  00000000  00000000  000835e6  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000e10dd  00000000  00000000  000a0b5b  2**0
+ 19 .debug_str    000e10de  00000000  00000000  000a0a63  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000053  00000000  00000000  00181c38  2**0
+ 20 .comment      00000053  00000000  00000000  00181b41  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  000072f0  00000000  00000000  00181c8c  2**2
+ 21 .debug_frame  000072f0  00000000  00000000  00181b94  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2037,7 +2037,7 @@ void rtc_init(){
 void rtc_Display7Seg(){
  8001504:	b580      	push	{r7, lr}
  8001506:	af00      	add	r7, sp, #0
-	  led7Set1Digit(DS3231_TimeNow.hours/10, 1);
+	  led7_SetDigit(DS3231_TimeNow.hours/10, 1);
  8001508:	4b1b      	ldr	r3, [pc, #108]	; (8001578 <rtc_Display7Seg+0x74>)
  800150a:	781b      	ldrb	r3, [r3, #0]
  800150c:	4a1b      	ldr	r2, [pc, #108]	; (800157c <rtc_Display7Seg+0x78>)
@@ -2046,8 +2046,8 @@ void rtc_Display7Seg(){
  8001514:	b2db      	uxtb	r3, r3
  8001516:	2101      	movs	r1, #1
  8001518:	4618      	mov	r0, r3
- 800151a:	f001 fa6f 	bl	80029fc <led7Set1Digit>
-	  led7Set1Digit(DS3231_TimeNow.hours%10, 2);
+ 800151a:	f001 fa6f 	bl	80029fc <led7_SetDigit>
+	  led7_SetDigit(DS3231_TimeNow.hours%10, 2);
  800151e:	4b16      	ldr	r3, [pc, #88]	; (8001578 <rtc_Display7Seg+0x74>)
  8001520:	781a      	ldrb	r2, [r3, #0]
  8001522:	4b16      	ldr	r3, [pc, #88]	; (800157c <rtc_Display7Seg+0x78>)
@@ -2061,8 +2061,8 @@ void rtc_Display7Seg(){
  8001534:	b2db      	uxtb	r3, r3
  8001536:	2102      	movs	r1, #2
  8001538:	4618      	mov	r0, r3
- 800153a:	f001 fa5f 	bl	80029fc <led7Set1Digit>
-	  led7Set1Digit(DS3231_TimeNow.min/10, 3);
+ 800153a:	f001 fa5f 	bl	80029fc <led7_SetDigit>
+	  led7_SetDigit(DS3231_TimeNow.min/10, 3);
  800153e:	4b0e      	ldr	r3, [pc, #56]	; (8001578 <rtc_Display7Seg+0x74>)
  8001540:	785b      	ldrb	r3, [r3, #1]
  8001542:	4a0e      	ldr	r2, [pc, #56]	; (800157c <rtc_Display7Seg+0x78>)
@@ -2071,8 +2071,8 @@ void rtc_Display7Seg(){
  800154a:	b2db      	uxtb	r3, r3
  800154c:	2103      	movs	r1, #3
  800154e:	4618      	mov	r0, r3
- 8001550:	f001 fa54 	bl	80029fc <led7Set1Digit>
-	  led7Set1Digit(DS3231_TimeNow.min%10, 4);
+ 8001550:	f001 fa54 	bl	80029fc <led7_SetDigit>
+	  led7_SetDigit(DS3231_TimeNow.min%10, 4);
  8001554:	4b08      	ldr	r3, [pc, #32]	; (8001578 <rtc_Display7Seg+0x74>)
  8001556:	785a      	ldrb	r2, [r3, #1]
  8001558:	4b08      	ldr	r3, [pc, #32]	; (800157c <rtc_Display7Seg+0x78>)
@@ -2086,7 +2086,7 @@ void rtc_Display7Seg(){
  800156a:	b2db      	uxtb	r3, r3
  800156c:	2104      	movs	r1, #4
  800156e:	4618      	mov	r0, r3
- 8001570:	f001 fa44 	bl	80029fc <led7Set1Digit>
+ 8001570:	f001 fa44 	bl	80029fc <led7_SetDigit>
 }
  8001574:	bf00      	nop
  8001576:	bd80      	pop	{r7, pc}
@@ -4864,37 +4864,37 @@ void led7_init(){
  80028b4:	40021400 	.word	0x40021400
  80028b8:	40021800 	.word	0x40021800
 
-080028bc <led7Scan>:
+080028bc <led7_Scan>:
 
-void led7Scan(){
+void led7_Scan(){
  80028bc:	b580      	push	{r7, lr}
  80028be:	af00      	add	r7, sp, #0
 	HAL_GPIO_WritePin(LD_LATCH_GPIO_Port, LD_LATCH_Pin, 0);
  80028c0:	2200      	movs	r2, #0
  80028c2:	2140      	movs	r1, #64	; 0x40
- 80028c4:	4847      	ldr	r0, [pc, #284]	; (80029e4 <led7Scan+0x128>)
+ 80028c4:	4847      	ldr	r0, [pc, #284]	; (80029e4 <led7_Scan+0x128>)
  80028c6:	f002 ff6d 	bl	80057a4 <HAL_GPIO_WritePin>
 	HAL_SPI_Transmit(&hspi1, led7 + led7_index, 1, 1);
- 80028ca:	4b47      	ldr	r3, [pc, #284]	; (80029e8 <led7Scan+0x12c>)
+ 80028ca:	4b47      	ldr	r3, [pc, #284]	; (80029e8 <led7_Scan+0x12c>)
  80028cc:	681b      	ldr	r3, [r3, #0]
  80028ce:	461a      	mov	r2, r3
- 80028d0:	4b46      	ldr	r3, [pc, #280]	; (80029ec <led7Scan+0x130>)
+ 80028d0:	4b46      	ldr	r3, [pc, #280]	; (80029ec <led7_Scan+0x130>)
  80028d2:	18d1      	adds	r1, r2, r3
  80028d4:	2301      	movs	r3, #1
  80028d6:	2201      	movs	r2, #1
- 80028d8:	4845      	ldr	r0, [pc, #276]	; (80029f0 <led7Scan+0x134>)
+ 80028d8:	4845      	ldr	r0, [pc, #276]	; (80029f0 <led7_Scan+0x134>)
  80028da:	f005 fafa 	bl	8007ed2 <HAL_SPI_Transmit>
 	HAL_GPIO_WritePin(LD_LATCH_GPIO_Port, LD_LATCH_Pin, 1);
  80028de:	2201      	movs	r2, #1
  80028e0:	2140      	movs	r1, #64	; 0x40
- 80028e2:	4840      	ldr	r0, [pc, #256]	; (80029e4 <led7Scan+0x128>)
+ 80028e2:	4840      	ldr	r0, [pc, #256]	; (80029e4 <led7_Scan+0x128>)
  80028e4:	f002 ff5e 	bl	80057a4 <HAL_GPIO_WritePin>
 	switch(led7_index){
- 80028e8:	4b3f      	ldr	r3, [pc, #252]	; (80029e8 <led7Scan+0x12c>)
+ 80028e8:	4b3f      	ldr	r3, [pc, #252]	; (80029e8 <led7_Scan+0x12c>)
  80028ea:	681b      	ldr	r3, [r3, #0]
  80028ec:	2b03      	cmp	r3, #3
- 80028ee:	d86b      	bhi.n	80029c8 <led7Scan+0x10c>
- 80028f0:	a201      	add	r2, pc, #4	; (adr r2, 80028f8 <led7Scan+0x3c>)
+ 80028ee:	d86b      	bhi.n	80029c8 <led7_Scan+0x10c>
+ 80028f0:	a201      	add	r2, pc, #4	; (adr r2, 80028f8 <led7_Scan+0x3c>)
  80028f2:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
  80028f6:	bf00      	nop
  80028f8:	08002909 	.word	0x08002909
@@ -4905,97 +4905,97 @@ void led7Scan(){
 		  HAL_GPIO_WritePin(LD_LED1_GPIO_Port, LD_LED1_Pin, 0);
  8002908:	2200      	movs	r2, #0
  800290a:	f44f 6180 	mov.w	r1, #1024	; 0x400
- 800290e:	4839      	ldr	r0, [pc, #228]	; (80029f4 <led7Scan+0x138>)
+ 800290e:	4839      	ldr	r0, [pc, #228]	; (80029f4 <led7_Scan+0x138>)
  8002910:	f002 ff48 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED2_GPIO_Port, LD_LED2_Pin, 1);
  8002914:	2201      	movs	r2, #1
  8002916:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 800291a:	4837      	ldr	r0, [pc, #220]	; (80029f8 <led7Scan+0x13c>)
+ 800291a:	4837      	ldr	r0, [pc, #220]	; (80029f8 <led7_Scan+0x13c>)
  800291c:	f002 ff42 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED3_GPIO_Port, LD_LED3_Pin, 1);
  8002920:	2201      	movs	r2, #1
  8002922:	2104      	movs	r1, #4
- 8002924:	4833      	ldr	r0, [pc, #204]	; (80029f4 <led7Scan+0x138>)
+ 8002924:	4833      	ldr	r0, [pc, #204]	; (80029f4 <led7_Scan+0x138>)
  8002926:	f002 ff3d 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED4_GPIO_Port, LD_LED4_Pin, 1);
  800292a:	2201      	movs	r2, #1
  800292c:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 8002930:	4830      	ldr	r0, [pc, #192]	; (80029f4 <led7Scan+0x138>)
+ 8002930:	4830      	ldr	r0, [pc, #192]	; (80029f4 <led7_Scan+0x138>)
  8002932:	f002 ff37 	bl	80057a4 <HAL_GPIO_WritePin>
 		  break;
- 8002936:	e047      	b.n	80029c8 <led7Scan+0x10c>
+ 8002936:	e047      	b.n	80029c8 <led7_Scan+0x10c>
 	case 1:
 		  HAL_GPIO_WritePin(LD_LED1_GPIO_Port, LD_LED1_Pin, 1);
  8002938:	2201      	movs	r2, #1
  800293a:	f44f 6180 	mov.w	r1, #1024	; 0x400
- 800293e:	482d      	ldr	r0, [pc, #180]	; (80029f4 <led7Scan+0x138>)
+ 800293e:	482d      	ldr	r0, [pc, #180]	; (80029f4 <led7_Scan+0x138>)
  8002940:	f002 ff30 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED2_GPIO_Port, LD_LED2_Pin, 0);
  8002944:	2200      	movs	r2, #0
  8002946:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 800294a:	482b      	ldr	r0, [pc, #172]	; (80029f8 <led7Scan+0x13c>)
+ 800294a:	482b      	ldr	r0, [pc, #172]	; (80029f8 <led7_Scan+0x13c>)
  800294c:	f002 ff2a 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED3_GPIO_Port, LD_LED3_Pin, 1);
  8002950:	2201      	movs	r2, #1
  8002952:	2104      	movs	r1, #4
- 8002954:	4827      	ldr	r0, [pc, #156]	; (80029f4 <led7Scan+0x138>)
+ 8002954:	4827      	ldr	r0, [pc, #156]	; (80029f4 <led7_Scan+0x138>)
  8002956:	f002 ff25 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED4_GPIO_Port, LD_LED4_Pin, 1);
  800295a:	2201      	movs	r2, #1
  800295c:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 8002960:	4824      	ldr	r0, [pc, #144]	; (80029f4 <led7Scan+0x138>)
+ 8002960:	4824      	ldr	r0, [pc, #144]	; (80029f4 <led7_Scan+0x138>)
  8002962:	f002 ff1f 	bl	80057a4 <HAL_GPIO_WritePin>
 		  break;
- 8002966:	e02f      	b.n	80029c8 <led7Scan+0x10c>
+ 8002966:	e02f      	b.n	80029c8 <led7_Scan+0x10c>
 	case 2:
 		  HAL_GPIO_WritePin(LD_LED1_GPIO_Port, LD_LED1_Pin, 1);
  8002968:	2201      	movs	r2, #1
  800296a:	f44f 6180 	mov.w	r1, #1024	; 0x400
- 800296e:	4821      	ldr	r0, [pc, #132]	; (80029f4 <led7Scan+0x138>)
+ 800296e:	4821      	ldr	r0, [pc, #132]	; (80029f4 <led7_Scan+0x138>)
  8002970:	f002 ff18 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED2_GPIO_Port, LD_LED2_Pin, 1);
  8002974:	2201      	movs	r2, #1
  8002976:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 800297a:	481f      	ldr	r0, [pc, #124]	; (80029f8 <led7Scan+0x13c>)
+ 800297a:	481f      	ldr	r0, [pc, #124]	; (80029f8 <led7_Scan+0x13c>)
  800297c:	f002 ff12 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED3_GPIO_Port, LD_LED3_Pin, 0);
  8002980:	2200      	movs	r2, #0
  8002982:	2104      	movs	r1, #4
- 8002984:	481b      	ldr	r0, [pc, #108]	; (80029f4 <led7Scan+0x138>)
+ 8002984:	481b      	ldr	r0, [pc, #108]	; (80029f4 <led7_Scan+0x138>)
  8002986:	f002 ff0d 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED4_GPIO_Port, LD_LED4_Pin, 1);
  800298a:	2201      	movs	r2, #1
  800298c:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 8002990:	4818      	ldr	r0, [pc, #96]	; (80029f4 <led7Scan+0x138>)
+ 8002990:	4818      	ldr	r0, [pc, #96]	; (80029f4 <led7_Scan+0x138>)
  8002992:	f002 ff07 	bl	80057a4 <HAL_GPIO_WritePin>
 		  break;
- 8002996:	e017      	b.n	80029c8 <led7Scan+0x10c>
+ 8002996:	e017      	b.n	80029c8 <led7_Scan+0x10c>
 	case 3:
 		  HAL_GPIO_WritePin(LD_LED1_GPIO_Port, LD_LED1_Pin, 1);
  8002998:	2201      	movs	r2, #1
  800299a:	f44f 6180 	mov.w	r1, #1024	; 0x400
- 800299e:	4815      	ldr	r0, [pc, #84]	; (80029f4 <led7Scan+0x138>)
+ 800299e:	4815      	ldr	r0, [pc, #84]	; (80029f4 <led7_Scan+0x138>)
  80029a0:	f002 ff00 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED2_GPIO_Port, LD_LED2_Pin, 1);
  80029a4:	2201      	movs	r2, #1
  80029a6:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 80029aa:	4813      	ldr	r0, [pc, #76]	; (80029f8 <led7Scan+0x13c>)
+ 80029aa:	4813      	ldr	r0, [pc, #76]	; (80029f8 <led7_Scan+0x13c>)
  80029ac:	f002 fefa 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED3_GPIO_Port, LD_LED3_Pin, 1);
  80029b0:	2201      	movs	r2, #1
  80029b2:	2104      	movs	r1, #4
- 80029b4:	480f      	ldr	r0, [pc, #60]	; (80029f4 <led7Scan+0x138>)
+ 80029b4:	480f      	ldr	r0, [pc, #60]	; (80029f4 <led7_Scan+0x138>)
  80029b6:	f002 fef5 	bl	80057a4 <HAL_GPIO_WritePin>
 		  HAL_GPIO_WritePin(LD_LED4_GPIO_Port, LD_LED4_Pin, 0);
  80029ba:	2200      	movs	r2, #0
  80029bc:	f44f 6100 	mov.w	r1, #2048	; 0x800
- 80029c0:	480c      	ldr	r0, [pc, #48]	; (80029f4 <led7Scan+0x138>)
+ 80029c0:	480c      	ldr	r0, [pc, #48]	; (80029f4 <led7_Scan+0x138>)
  80029c2:	f002 feef 	bl	80057a4 <HAL_GPIO_WritePin>
 		  break;
  80029c6:	bf00      	nop
 	}
 	led7_index = (led7_index + 1)%4;
- 80029c8:	4b07      	ldr	r3, [pc, #28]	; (80029e8 <led7Scan+0x12c>)
+ 80029c8:	4b07      	ldr	r3, [pc, #28]	; (80029e8 <led7_Scan+0x12c>)
  80029ca:	681b      	ldr	r3, [r3, #0]
  80029cc:	3301      	adds	r3, #1
  80029ce:	425a      	negs	r2, r3
@@ -5003,7 +5003,7 @@ void led7Scan(){
  80029d4:	f002 0203 	and.w	r2, r2, #3
  80029d8:	bf58      	it	pl
  80029da:	4253      	negpl	r3, r2
- 80029dc:	4a02      	ldr	r2, [pc, #8]	; (80029e8 <led7Scan+0x12c>)
+ 80029dc:	4a02      	ldr	r2, [pc, #8]	; (80029e8 <led7_Scan+0x12c>)
  80029de:	6013      	str	r3, [r2, #0]
 }
  80029e0:	bf00      	nop
@@ -5015,9 +5015,9 @@ void led7Scan(){
  80029f4:	40020400 	.word	0x40020400
  80029f8:	40021400 	.word	0x40021400
 
-080029fc <led7Set1Digit>:
+080029fc <led7_SetDigit>:
 
-void led7Set1Digit(int num, int position){
+void led7_SetDigit(int num, int position){
  80029fc:	b480      	push	{r7}
  80029fe:	b085      	sub	sp, #20
  8002a00:	af00      	add	r7, sp, #0
@@ -5026,17 +5026,17 @@ void led7Set1Digit(int num, int position){
 	if(num > 9 || num < 0) return;
  8002a06:	687b      	ldr	r3, [r7, #4]
  8002a08:	2b09      	cmp	r3, #9
- 8002a0a:	dc43      	bgt.n	8002a94 <led7Set1Digit+0x98>
+ 8002a0a:	dc43      	bgt.n	8002a94 <led7_SetDigit+0x98>
  8002a0c:	687b      	ldr	r3, [r7, #4]
  8002a0e:	2b00      	cmp	r3, #0
- 8002a10:	db40      	blt.n	8002a94 <led7Set1Digit+0x98>
+ 8002a10:	db40      	blt.n	8002a94 <led7_SetDigit+0x98>
 	unsigned char digit = 0;
  8002a12:	2300      	movs	r3, #0
  8002a14:	73fb      	strb	r3, [r7, #15]
  8002a16:	687b      	ldr	r3, [r7, #4]
  8002a18:	2b09      	cmp	r3, #9
- 8002a1a:	d835      	bhi.n	8002a88 <led7Set1Digit+0x8c>
- 8002a1c:	a201      	add	r2, pc, #4	; (adr r2, 8002a24 <led7Set1Digit+0x28>)
+ 8002a1a:	d835      	bhi.n	8002a88 <led7_SetDigit+0x8c>
+ 8002a1c:	a201      	add	r2, pc, #4	; (adr r2, 8002a24 <led7_SetDigit+0x28>)
  8002a1e:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
  8002a22:	bf00      	nop
  8002a24:	08002a4d 	.word	0x08002a4d
@@ -5055,55 +5055,55 @@ void led7Set1Digit(int num, int position){
  8002a4c:	2303      	movs	r3, #3
  8002a4e:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a50:	e01a      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a50:	e01a      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 1:
 		digit = 0x9f;
  8002a52:	239f      	movs	r3, #159	; 0x9f
  8002a54:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a56:	e017      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a56:	e017      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 2:
 		digit = 0x25;
  8002a58:	2325      	movs	r3, #37	; 0x25
  8002a5a:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a5c:	e014      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a5c:	e014      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 3:
 		digit = 0x0d;
  8002a5e:	230d      	movs	r3, #13
  8002a60:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a62:	e011      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a62:	e011      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 4:
 		digit = 0x99;
  8002a64:	2399      	movs	r3, #153	; 0x99
  8002a66:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a68:	e00e      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a68:	e00e      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 5:
 		digit = 0x49;
  8002a6a:	2349      	movs	r3, #73	; 0x49
  8002a6c:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a6e:	e00b      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a6e:	e00b      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 6:
 		digit = 0x41;
  8002a70:	2341      	movs	r3, #65	; 0x41
  8002a72:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a74:	e008      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a74:	e008      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 7:
 		digit = 0x1f;
  8002a76:	231f      	movs	r3, #31
  8002a78:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a7a:	e005      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a7a:	e005      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 8:
 		digit = 0x01;
  8002a7c:	2301      	movs	r3, #1
  8002a7e:	73fb      	strb	r3, [r7, #15]
 		break;
- 8002a80:	e002      	b.n	8002a88 <led7Set1Digit+0x8c>
+ 8002a80:	e002      	b.n	8002a88 <led7_SetDigit+0x8c>
 	case 9:
 		digit = 0x09;
  8002a82:	2309      	movs	r3, #9
@@ -5114,10 +5114,10 @@ void led7Set1Digit(int num, int position){
 	led7[position - 1] = digit;
  8002a88:	683b      	ldr	r3, [r7, #0]
  8002a8a:	3b01      	subs	r3, #1
- 8002a8c:	4904      	ldr	r1, [pc, #16]	; (8002aa0 <led7Set1Digit+0xa4>)
+ 8002a8c:	4904      	ldr	r1, [pc, #16]	; (8002aa0 <led7_SetDigit+0xa4>)
  8002a8e:	7bfa      	ldrb	r2, [r7, #15]
  8002a90:	54ca      	strb	r2, [r1, r3]
- 8002a92:	e000      	b.n	8002a96 <led7Set1Digit+0x9a>
+ 8002a92:	e000      	b.n	8002a96 <led7_SetDigit+0x9a>
 	if(num > 9 || num < 0) return;
  8002a94:	bf00      	nop
 }
@@ -8825,8 +8825,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		}
 		timerRun();
  8003f52:	f7ff ffa5 	bl	8003ea0 <timerRun>
-		led7Scan();
- 8003f56:	f7fe fcb1 	bl	80028bc <led7Scan>
+		led7_Scan();
+ 8003f56:	f7fe fcb1 	bl	80028bc <led7_Scan>
 	}
 }
  8003f5a:	bf00      	nop

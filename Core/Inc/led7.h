@@ -10,11 +10,11 @@
 
 #include "global.h"
 
-extern unsigned char led7[4];
+//extern unsigned char led7[4];
 
-void led7Scan();
-void led7Set1Digit(int num, int position);
-//void led7Test();
-void led7ColonEn(int enable);
+void led7_init();
 
+void led7_Scan();
+
+void led7_SetDigit(int num, int position);
 #endif /* INC_LED7_H_ */

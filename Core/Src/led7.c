@@ -20,7 +20,7 @@ void led7_init(){
 	  HAL_GPIO_WritePin(LD_LATCH_GPIO_Port, LD_LATCH_Pin, 1);
 }
 
-void led7Scan(){
+void led7_Scan(){
 	HAL_GPIO_WritePin(LD_LATCH_GPIO_Port, LD_LATCH_Pin, 0);
 	HAL_SPI_Transmit(&hspi1, led7 + led7_index, 1, 1);
 	HAL_GPIO_WritePin(LD_LATCH_GPIO_Port, LD_LATCH_Pin, 1);
@@ -53,7 +53,7 @@ void led7Scan(){
 	led7_index = (led7_index + 1)%4;
 }
 
-void led7Set1Digit(int num, int position){
+void led7_SetDigit(int num, int position){
 	if(num > 9 || num < 0) return;
 	unsigned char digit = 0;
 	switch(num){
@@ -90,10 +90,3 @@ void led7Set1Digit(int num, int position){
 	}
 	led7[position - 1] = digit;
 }
-
-//void led7Test(){
-//	led7[0] = (led7[0] + 1)%10;
-//	led7[1] = (led7[1] + 2)%10;
-//	led7[2] = (led7[2] + 3)%10;
-//	led7[3] = (led7[3] + 4)%10;
-//}
