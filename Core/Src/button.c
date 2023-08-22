@@ -16,7 +16,7 @@ void button_init(){
 	HAL_GPIO_WritePin(BTN_LOAD_GPIO_Port, BTN_LOAD_Pin, 1);
 }
 
-void button_scan(){
+void button_Scan(){
 	  HAL_GPIO_WritePin(BTN_LOAD_GPIO_Port, BTN_LOAD_Pin, 0);
 	  HAL_GPIO_WritePin(BTN_LOAD_GPIO_Port, BTN_LOAD_Pin, 1);
 	  HAL_SPI_Receive(&hspi1, &spi_button, 1, 1);
@@ -33,7 +33,7 @@ void button_scan(){
 	  }
 }
 
-void button_test(){
+void button_Test(){
 	for(int i = 0; i < 8; i++){
 		if(button_count[i] > 0){
 			HAL_UART_Transmit(&huart1, (void*)str, sprintf(str, "Button %d pressed.\n", i+1), 100);

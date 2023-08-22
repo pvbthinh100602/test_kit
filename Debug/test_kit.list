@@ -29,23 +29,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  12 .ARM.attributes 00000030  00000000  00000000  000301e4  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00026136  00000000  00000000  00030214  2**0
+ 13 .debug_info   00026123  00000000  00000000  00030214  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00003f10  00000000  00000000  0005634a  2**0
+ 14 .debug_abbrev 00003efb  00000000  00000000  00056337  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00001738  00000000  00000000  0005a260  2**3
+ 15 .debug_aranges 00001738  00000000  00000000  0005a238  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_ranges 000015c8  00000000  00000000  0005b998  2**3
+ 16 .debug_ranges 000015c8  00000000  00000000  0005b970  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  000267a6  00000000  00000000  0005cf60  2**0
+ 17 .debug_macro  000267a6  00000000  00000000  0005cf38  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001d47d  00000000  00000000  00083706  2**0
+ 18 .debug_line   0001d47d  00000000  00000000  000836de  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000e10dd  00000000  00000000  000a0b83  2**0
+ 19 .debug_str    000e10dd  00000000  00000000  000a0b5b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000053  00000000  00000000  00181c60  2**0
+ 20 .comment      00000053  00000000  00000000  00181c38  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  000072f0  00000000  00000000  00181cb4  2**2
+ 21 .debug_frame  000072f0  00000000  00000000  00181c8c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1578,27 +1578,27 @@ void button_init(){
  80011ec:	20000434 	.word	0x20000434
  80011f0:	40020c00 	.word	0x40020c00
 
-080011f4 <button_scan>:
+080011f4 <button_Scan>:
 
-void button_scan(){
+void button_Scan(){
  80011f4:	b580      	push	{r7, lr}
  80011f6:	b082      	sub	sp, #8
  80011f8:	af00      	add	r7, sp, #0
 	  HAL_GPIO_WritePin(BTN_LOAD_GPIO_Port, BTN_LOAD_Pin, 0);
  80011fa:	2200      	movs	r2, #0
  80011fc:	2108      	movs	r1, #8
- 80011fe:	482a      	ldr	r0, [pc, #168]	; (80012a8 <button_scan+0xb4>)
+ 80011fe:	482a      	ldr	r0, [pc, #168]	; (80012a8 <button_Scan+0xb4>)
  8001200:	f004 fad0 	bl	80057a4 <HAL_GPIO_WritePin>
 	  HAL_GPIO_WritePin(BTN_LOAD_GPIO_Port, BTN_LOAD_Pin, 1);
  8001204:	2201      	movs	r2, #1
  8001206:	2108      	movs	r1, #8
- 8001208:	4827      	ldr	r0, [pc, #156]	; (80012a8 <button_scan+0xb4>)
+ 8001208:	4827      	ldr	r0, [pc, #156]	; (80012a8 <button_Scan+0xb4>)
  800120a:	f004 facb 	bl	80057a4 <HAL_GPIO_WritePin>
 	  HAL_SPI_Receive(&hspi1, &spi_button, 1, 1);
  800120e:	2301      	movs	r3, #1
  8001210:	2201      	movs	r2, #1
- 8001212:	4926      	ldr	r1, [pc, #152]	; (80012ac <button_scan+0xb8>)
- 8001214:	4826      	ldr	r0, [pc, #152]	; (80012b0 <button_scan+0xbc>)
+ 8001212:	4926      	ldr	r1, [pc, #152]	; (80012ac <button_Scan+0xb8>)
+ 8001214:	4826      	ldr	r0, [pc, #152]	; (80012b0 <button_Scan+0xbc>)
  8001216:	f006 ff98 	bl	800814a <HAL_SPI_Receive>
 	  unsigned char mask = 0x80;
  800121a:	2380      	movs	r3, #128	; 0x80
@@ -1606,58 +1606,58 @@ void button_scan(){
 	  for(int i = 0; i < 8; i++){
  800121e:	2300      	movs	r3, #0
  8001220:	603b      	str	r3, [r7, #0]
- 8001222:	e038      	b.n	8001296 <button_scan+0xa2>
+ 8001222:	e038      	b.n	8001296 <button_Scan+0xa2>
 		  if(mask > 0x0f){
  8001224:	79fb      	ldrb	r3, [r7, #7]
  8001226:	2b0f      	cmp	r3, #15
- 8001228:	d917      	bls.n	800125a <button_scan+0x66>
+ 8001228:	d917      	bls.n	800125a <button_Scan+0x66>
 			  if(spi_button & mask) button_count[3-i] = 0;
- 800122a:	4b20      	ldr	r3, [pc, #128]	; (80012ac <button_scan+0xb8>)
+ 800122a:	4b20      	ldr	r3, [pc, #128]	; (80012ac <button_Scan+0xb8>)
  800122c:	781a      	ldrb	r2, [r3, #0]
  800122e:	79fb      	ldrb	r3, [r7, #7]
  8001230:	4013      	ands	r3, r2
  8001232:	b2db      	uxtb	r3, r3
  8001234:	2b00      	cmp	r3, #0
- 8001236:	d006      	beq.n	8001246 <button_scan+0x52>
+ 8001236:	d006      	beq.n	8001246 <button_Scan+0x52>
  8001238:	683b      	ldr	r3, [r7, #0]
  800123a:	f1c3 0303 	rsb	r3, r3, #3
- 800123e:	4a1d      	ldr	r2, [pc, #116]	; (80012b4 <button_scan+0xc0>)
+ 800123e:	4a1d      	ldr	r2, [pc, #116]	; (80012b4 <button_Scan+0xc0>)
  8001240:	2100      	movs	r1, #0
  8001242:	54d1      	strb	r1, [r2, r3]
- 8001244:	e021      	b.n	800128a <button_scan+0x96>
+ 8001244:	e021      	b.n	800128a <button_Scan+0x96>
 			  else button_count[3-i]++;
  8001246:	683b      	ldr	r3, [r7, #0]
  8001248:	f1c3 0303 	rsb	r3, r3, #3
- 800124c:	4a19      	ldr	r2, [pc, #100]	; (80012b4 <button_scan+0xc0>)
+ 800124c:	4a19      	ldr	r2, [pc, #100]	; (80012b4 <button_Scan+0xc0>)
  800124e:	5cd2      	ldrb	r2, [r2, r3]
  8001250:	3201      	adds	r2, #1
  8001252:	b2d1      	uxtb	r1, r2
- 8001254:	4a17      	ldr	r2, [pc, #92]	; (80012b4 <button_scan+0xc0>)
+ 8001254:	4a17      	ldr	r2, [pc, #92]	; (80012b4 <button_Scan+0xc0>)
  8001256:	54d1      	strb	r1, [r2, r3]
- 8001258:	e017      	b.n	800128a <button_scan+0x96>
+ 8001258:	e017      	b.n	800128a <button_Scan+0x96>
 		  } else {
 			  if(spi_button & mask) button_count[i] = 0;
- 800125a:	4b14      	ldr	r3, [pc, #80]	; (80012ac <button_scan+0xb8>)
+ 800125a:	4b14      	ldr	r3, [pc, #80]	; (80012ac <button_Scan+0xb8>)
  800125c:	781a      	ldrb	r2, [r3, #0]
  800125e:	79fb      	ldrb	r3, [r7, #7]
  8001260:	4013      	ands	r3, r2
  8001262:	b2db      	uxtb	r3, r3
  8001264:	2b00      	cmp	r3, #0
- 8001266:	d005      	beq.n	8001274 <button_scan+0x80>
- 8001268:	4a12      	ldr	r2, [pc, #72]	; (80012b4 <button_scan+0xc0>)
+ 8001266:	d005      	beq.n	8001274 <button_Scan+0x80>
+ 8001268:	4a12      	ldr	r2, [pc, #72]	; (80012b4 <button_Scan+0xc0>)
  800126a:	683b      	ldr	r3, [r7, #0]
  800126c:	4413      	add	r3, r2
  800126e:	2200      	movs	r2, #0
  8001270:	701a      	strb	r2, [r3, #0]
- 8001272:	e00a      	b.n	800128a <button_scan+0x96>
+ 8001272:	e00a      	b.n	800128a <button_Scan+0x96>
 			  else button_count[i]++;
- 8001274:	4a0f      	ldr	r2, [pc, #60]	; (80012b4 <button_scan+0xc0>)
+ 8001274:	4a0f      	ldr	r2, [pc, #60]	; (80012b4 <button_Scan+0xc0>)
  8001276:	683b      	ldr	r3, [r7, #0]
  8001278:	4413      	add	r3, r2
  800127a:	781b      	ldrb	r3, [r3, #0]
  800127c:	3301      	adds	r3, #1
  800127e:	b2d9      	uxtb	r1, r3
- 8001280:	4a0c      	ldr	r2, [pc, #48]	; (80012b4 <button_scan+0xc0>)
+ 8001280:	4a0c      	ldr	r2, [pc, #48]	; (80012b4 <button_Scan+0xc0>)
  8001282:	683b      	ldr	r3, [r7, #0]
  8001284:	4413      	add	r3, r2
  8001286:	460a      	mov	r2, r1
@@ -1673,7 +1673,7 @@ void button_scan(){
  8001294:	603b      	str	r3, [r7, #0]
  8001296:	683b      	ldr	r3, [r7, #0]
  8001298:	2b07      	cmp	r3, #7
- 800129a:	ddc3      	ble.n	8001224 <button_scan+0x30>
+ 800129a:	ddc3      	ble.n	8001224 <button_Scan+0x30>
 	  }
 }
  800129c:	bf00      	nop
@@ -1687,35 +1687,35 @@ void button_scan(){
  80012b0:	20000434 	.word	0x20000434
  80012b4:	20000204 	.word	0x20000204
 
-080012b8 <button_test>:
+080012b8 <button_Test>:
 
-void button_test(){
+void button_Test(){
  80012b8:	b580      	push	{r7, lr}
  80012ba:	b082      	sub	sp, #8
  80012bc:	af00      	add	r7, sp, #0
 	for(int i = 0; i < 8; i++){
  80012be:	2300      	movs	r3, #0
  80012c0:	607b      	str	r3, [r7, #4]
- 80012c2:	e016      	b.n	80012f2 <button_test+0x3a>
+ 80012c2:	e016      	b.n	80012f2 <button_Test+0x3a>
 		if(button_count[i] > 0){
- 80012c4:	4a0f      	ldr	r2, [pc, #60]	; (8001304 <button_test+0x4c>)
+ 80012c4:	4a0f      	ldr	r2, [pc, #60]	; (8001304 <button_Test+0x4c>)
  80012c6:	687b      	ldr	r3, [r7, #4]
  80012c8:	4413      	add	r3, r2
  80012ca:	781b      	ldrb	r3, [r3, #0]
  80012cc:	2b00      	cmp	r3, #0
- 80012ce:	d00d      	beq.n	80012ec <button_test+0x34>
+ 80012ce:	d00d      	beq.n	80012ec <button_Test+0x34>
 			HAL_UART_Transmit(&huart1, (void*)str, sprintf(str, "Button %d pressed.\n", i+1), 100);
  80012d0:	687b      	ldr	r3, [r7, #4]
  80012d2:	3301      	adds	r3, #1
  80012d4:	461a      	mov	r2, r3
- 80012d6:	490c      	ldr	r1, [pc, #48]	; (8001308 <button_test+0x50>)
- 80012d8:	480c      	ldr	r0, [pc, #48]	; (800130c <button_test+0x54>)
+ 80012d6:	490c      	ldr	r1, [pc, #48]	; (8001308 <button_Test+0x50>)
+ 80012d8:	480c      	ldr	r0, [pc, #48]	; (800130c <button_Test+0x54>)
  80012da:	f00a fa53 	bl	800b784 <siprintf>
  80012de:	4603      	mov	r3, r0
  80012e0:	b29a      	uxth	r2, r3
  80012e2:	2364      	movs	r3, #100	; 0x64
- 80012e4:	4909      	ldr	r1, [pc, #36]	; (800130c <button_test+0x54>)
- 80012e6:	480a      	ldr	r0, [pc, #40]	; (8001310 <button_test+0x58>)
+ 80012e4:	4909      	ldr	r1, [pc, #36]	; (800130c <button_Test+0x54>)
+ 80012e6:	480a      	ldr	r0, [pc, #40]	; (8001310 <button_Test+0x58>)
  80012e8:	f008 fd65 	bl	8009db6 <HAL_UART_Transmit>
 	for(int i = 0; i < 8; i++){
  80012ec:	687b      	ldr	r3, [r7, #4]
@@ -1723,7 +1723,7 @@ void button_test(){
  80012f0:	607b      	str	r3, [r7, #4]
  80012f2:	687b      	ldr	r3, [r7, #4]
  80012f4:	2b07      	cmp	r3, #7
- 80012f6:	dde5      	ble.n	80012c4 <button_test+0xc>
+ 80012f6:	dde5      	ble.n	80012c4 <button_Test+0xc>
 		}
 	}
 }
@@ -5289,8 +5289,8 @@ int main(void)
  8002b90:	601a      	str	r2, [r3, #0]
 	  rtc_Read();
  8002b92:	f7fe fcf5 	bl	8001580 <rtc_Read>
-	  button_scan();
- 8002b96:	f7fe fb2d 	bl	80011f4 <button_scan>
+	  button_Scan();
+ 8002b96:	f7fe fb2d 	bl	80011f4 <button_Scan>
 	  adc_Test();
  8002b9a:	f7fe fa8f 	bl	80010bc <adc_Test>
 	  LCD_Fill(0, 120, lcddev.width, 140, WHITE);
@@ -5324,12 +5324,12 @@ int main(void)
  8002bd8:	fb02 f201 	mul.w	r2, r2, r1
  8002bdc:	1a9b      	subs	r3, r3, r2
  8002bde:	637b      	str	r3, [r7, #52]	; 0x34
-	  test_output();
- 8002be0:	f000 fc54 	bl	800348c <test_output>
+	  output_Test();
+ 8002be0:	f000 fc54 	bl	800348c <output_Test>
 	  rtc_Display7Seg();
  8002be4:	f7fe fc8e 	bl	8001504 <rtc_Display7Seg>
-	  button_test();
- 8002be8:	f7fe fb66 	bl	80012b8 <button_test>
+	  button_Test();
+ 8002be8:	f7fe fb66 	bl	80012b8 <button_Test>
 	  pwm_Test();
  8002bec:	f000 fce0 	bl	80035b0 <pwm_Test>
 	  if(flag_timer1){
@@ -6822,27 +6822,27 @@ static void MX_FSMC_Init(void)
  8003484:	200005d8 	.word	0x200005d8
  8003488:	a0000104 	.word	0xa0000104
 
-0800348c <test_output>:
+0800348c <output_Test>:
 	__HAL_TIM_ENABLE(&htim3);
 	while (__HAL_TIM_GET_COUNTER(&htim3) < us);  // wait for the counter to reach the us input in the parameter
 	__HAL_TIM_DISABLE(&htim3);
 }
 
-void test_output(){
+void output_Test(){
  800348c:	b580      	push	{r7, lr}
  800348e:	af00      	add	r7, sp, #0
 	HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, button_count[1]);
- 8003490:	4b21      	ldr	r3, [pc, #132]	; (8003518 <test_output+0x8c>)
+ 8003490:	4b21      	ldr	r3, [pc, #132]	; (8003518 <output_Test+0x8c>)
  8003492:	785b      	ldrb	r3, [r3, #1]
  8003494:	461a      	mov	r2, r3
  8003496:	2120      	movs	r1, #32
- 8003498:	4820      	ldr	r0, [pc, #128]	; (800351c <test_output+0x90>)
+ 8003498:	4820      	ldr	r0, [pc, #128]	; (800351c <output_Test+0x90>)
  800349a:	f002 f983 	bl	80057a4 <HAL_GPIO_WritePin>
 	counter_debug = (counter_debug + 1)%20;
- 800349e:	4b20      	ldr	r3, [pc, #128]	; (8003520 <test_output+0x94>)
+ 800349e:	4b20      	ldr	r3, [pc, #128]	; (8003520 <output_Test+0x94>)
  80034a0:	781b      	ldrb	r3, [r3, #0]
  80034a2:	1c5a      	adds	r2, r3, #1
- 80034a4:	4b1f      	ldr	r3, [pc, #124]	; (8003524 <test_output+0x98>)
+ 80034a4:	4b1f      	ldr	r3, [pc, #124]	; (8003524 <output_Test+0x98>)
  80034a6:	fb83 1302 	smull	r1, r3, r3, r2
  80034aa:	10d9      	asrs	r1, r3, #3
  80034ac:	17d3      	asrs	r3, r2, #31
@@ -6853,22 +6853,22 @@ void test_output(){
  80034b6:	009b      	lsls	r3, r3, #2
  80034b8:	1ad1      	subs	r1, r2, r3
  80034ba:	b2ca      	uxtb	r2, r1
- 80034bc:	4b18      	ldr	r3, [pc, #96]	; (8003520 <test_output+0x94>)
+ 80034bc:	4b18      	ldr	r3, [pc, #96]	; (8003520 <output_Test+0x94>)
  80034be:	701a      	strb	r2, [r3, #0]
 	if(counter_debug == 0){
- 80034c0:	4b17      	ldr	r3, [pc, #92]	; (8003520 <test_output+0x94>)
+ 80034c0:	4b17      	ldr	r3, [pc, #92]	; (8003520 <output_Test+0x94>)
  80034c2:	781b      	ldrb	r3, [r3, #0]
  80034c4:	2b00      	cmp	r3, #0
- 80034c6:	d103      	bne.n	80034d0 <test_output+0x44>
+ 80034c6:	d103      	bne.n	80034d0 <output_Test+0x44>
 		HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
  80034c8:	2110      	movs	r1, #16
- 80034ca:	4814      	ldr	r0, [pc, #80]	; (800351c <test_output+0x90>)
+ 80034ca:	4814      	ldr	r0, [pc, #80]	; (800351c <output_Test+0x90>)
  80034cc:	f002 f983 	bl	80057d6 <HAL_GPIO_TogglePin>
 	}
 	if(button_count[2] % 20 == 1){
- 80034d0:	4b11      	ldr	r3, [pc, #68]	; (8003518 <test_output+0x8c>)
+ 80034d0:	4b11      	ldr	r3, [pc, #68]	; (8003518 <output_Test+0x8c>)
  80034d2:	789a      	ldrb	r2, [r3, #2]
- 80034d4:	4b14      	ldr	r3, [pc, #80]	; (8003528 <test_output+0x9c>)
+ 80034d4:	4b14      	ldr	r3, [pc, #80]	; (8003528 <output_Test+0x9c>)
  80034d6:	fba3 1302 	umull	r1, r3, r3, r2
  80034da:	0919      	lsrs	r1, r3, #4
  80034dc:	460b      	mov	r3, r1
@@ -6878,17 +6878,17 @@ void test_output(){
  80034e4:	1ad3      	subs	r3, r2, r3
  80034e6:	b2db      	uxtb	r3, r3
  80034e8:	2b01      	cmp	r3, #1
- 80034ea:	d103      	bne.n	80034f4 <test_output+0x68>
+ 80034ea:	d103      	bne.n	80034f4 <output_Test+0x68>
 		HAL_GPIO_TogglePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin);
  80034ec:	2140      	movs	r1, #64	; 0x40
- 80034ee:	480b      	ldr	r0, [pc, #44]	; (800351c <test_output+0x90>)
+ 80034ee:	480b      	ldr	r0, [pc, #44]	; (800351c <output_Test+0x90>)
  80034f0:	f002 f971 	bl	80057d6 <HAL_GPIO_TogglePin>
 	}
 	if(button_count[3] == 1){
- 80034f4:	4b08      	ldr	r3, [pc, #32]	; (8003518 <test_output+0x8c>)
+ 80034f4:	4b08      	ldr	r3, [pc, #32]	; (8003518 <output_Test+0x8c>)
  80034f6:	78db      	ldrb	r3, [r3, #3]
  80034f8:	2b01      	cmp	r3, #1
- 80034fa:	d10b      	bne.n	8003514 <test_output+0x88>
+ 80034fa:	d10b      	bne.n	8003514 <output_Test+0x88>
 		Set_Dir(DFT_SCAN_DIR);
  80034fc:	2060      	movs	r0, #96	; 0x60
  80034fe:	f7fe fea7 	bl	8002250 <Set_Dir>

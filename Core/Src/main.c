@@ -82,7 +82,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM13_Init(void);
 static void MX_FSMC_Init(void);
 /* USER CODE BEGIN PFP */
-void test_output();
+void output_Test();
 void init_system();
 /* USER CODE END PFP */
 
@@ -159,14 +159,14 @@ int main(void)
 	  while(!flag_timer2);
 	  flag_timer2 = 0;
 	  rtc_Read();
-	  button_scan();
+	  button_Scan();
 	  adc_Test();
 	  LCD_Fill(0, 120, lcddev.width, 140, WHITE);
 	  LCD_ShowString(hello_index,120,"Hello",BLUE,BLUE,16,1);
 	  hello_index = (hello_index+1)%lcddev.width;
-	  test_output();
+	  output_Test();
 	  rtc_Display7Seg();
-	  button_test();
+	  button_Test();
 	  pwm_Test();
 	  if(flag_timer1){
 		  flag_timer1 = 0;
@@ -744,7 +744,7 @@ void delay_us(uint16_t us)
 	__HAL_TIM_DISABLE(&htim3);
 }
 
-void test_output(){
+void output_Test(){
 	HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, button_count[1]);
 	counter_debug = (counter_debug + 1)%20;
 	if(counter_debug == 0){
