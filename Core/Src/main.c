@@ -29,6 +29,7 @@
 #include "ds3231.h"
 #include "pwm.h"
 #include "lcd.h"
+#include "adc.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -64,7 +65,7 @@ UART_HandleTypeDef huart2;
 SRAM_HandleTypeDef hsram1;
 
 /* USER CODE BEGIN PV */
-
+uint8_t counter_debug = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -82,20 +83,18 @@ static void MX_TIM13_Init(void);
 static void MX_FSMC_Init(void);
 /* USER CODE BEGIN PFP */
 void test_output();
+void init_system();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void DrawTestPage(uint8_t *str)
 {
-//»æÖÆ¹Ì¶¨À¸up
-LCD_Fill(0,0,lcddev.width,20,BLUE);
-//»æÖÆ¹Ì¶¨À¸down
-LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
-Gui_StrCenter(0,2,str,WHITE,BLUE,16,1);//¾ÓÖ�?�?ÔÊ¾
-Gui_StrCenter(0,lcddev.height-18,"Test page",WHITE,BLUE,16,1);//¾ÓÖ�?�?ÔÊ¾
-//»æÖÆ²âÊÔÇøÓò
-LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
+	LCD_Fill(0,0,lcddev.width,20,BLUE);
+	LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
+	Gui_StrCenter(0,2,str,WHITE,BLUE,16,1);
+	Gui_StrCenter(0,lcddev.height-18,"Test page",WHITE,BLUE,16,1);
+	LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
 }
 /* USER CODE END 0 */
 
@@ -138,77 +137,40 @@ int main(void)
   MX_TIM13_Init();
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
-  HAL_Delay(1000);
-//  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_SET);
-  timer_init();
-  pwm_init();
-  button_init();
-  led7_init();
-  ADC_Init();
-  UART_Init();
-  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_RESET);
-  HAL_Delay(500);
-  HAL_GPIO_WritePin(FSMC_RES_GPIO_Port, FSMC_RES_Pin, GPIO_PIN_SET);
-  HAL_Delay(500);
-  LCD_Init();
-
-  ds3231_init();
-  LCD_Clear(WHITE);
-  HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
-//  HAL_GPIO_WritePin(FSMC_BLK_GPIO_Port, FSMC_BLK_Pin, 1);
+  init_system();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  // reset LCD
-
-
-
-
 
   //read
-  unsigned char s[50];
-//  uint16_t tmp = 0x00; //0000 is the code, see ILI9325 manual for details
-////  HAL_SRAM_Write_16b(&hsram1, &LCD_Reg_Addr, &tmp,2);
-//  LCD_WriteIndex(0xd3);
-//
-////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
-//  tmp = LCD_ReadData();
-//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
-//  tmp = LCD_ReadData();
-////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
-//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
-//  tmp = LCD_ReadData();
-////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
-//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
-//  tmp = LCD_ReadData();
-////  HAL_SRAM_Read_16b(&hsram1, &LCD_Data_Addr, &tmp, 2);
-//  HAL_UART_Transmit(&huart1, (void*)s,sprintf(s,"\n%x\n", tmp), 10);
+  uint8_t s[50];
 
-  HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "%x, %x\n", &LCD->LCD_RAM, &LCD->LCD_REG), 10);
-  HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "id: %x\n", lcddev.id), 10);
 
-//  DrawTestPage("hello");
 
+//  HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "%d:%d:%d", getHour(), getMin(), getSec()), 10);
+  int hello_index = 0;
+  LcdShowOne();
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 	  while(!flag_timer2);
+	  flag_timer2 = 0;
+	  rtc_Read();
 	  button_scan();
-	  DrawTestPage("hello");
+	  adc_Test();
+	  LCD_Fill(0, 120, lcddev.width, 140, WHITE);
+	  LCD_ShowString(hello_index,120,"Hello",BLUE,BLUE,16,1);
+	  hello_index = (hello_index+1)%lcddev.width;
 	  test_output();
-	  time_display();
+	  rtc_Display7Seg();
 	  button_test();
-	  test_pwm();
-	  setTimer2(50);
+	  pwm_Test();
 	  if(flag_timer1){
-		  setTimer1(1000);
-//		  DrawTestPage("Hello");
-		  HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
-		  read_time();
-		  test_adc();
+		  flag_timer1 = 0;
+		  LcdTest();
 	  }
   }
   /* USER CODE END 3 */
@@ -784,9 +746,32 @@ void delay_us(uint16_t us)
 
 void test_output(){
 	HAL_GPIO_WritePin(OUTPUT_Y0_GPIO_Port, OUTPUT_Y0_Pin, button_count[1]);
+	counter_debug = (counter_debug + 1)%20;
+	if(counter_debug == 0){
+		HAL_GPIO_TogglePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin);
+	}
 	if(button_count[2] % 20 == 1){
 		HAL_GPIO_TogglePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin);
 	}
+	if(button_count[3] == 1){
+		Set_Dir(DFT_SCAN_DIR);
+		LCD_WR_REG(0x36);    // Memory Access Control
+		LCD_WR_DATA(0x08|DFT_SCAN_DIR);
+		LCD_Clear(BLACK);
+	}
+}
+
+void init_system(){
+	timer_init();
+	pwm_init();
+	button_init();
+	led7_init();
+	adc_init();
+	UART_Init();
+	LCD_Init();
+	rtc_init();
+	LCD_Clear(WHITE);
+	HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
 }
 /* USER CODE END 4 */
 

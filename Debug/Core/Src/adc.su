@@ -1,7 +1,7 @@
-adc.c:12:6:ADC_Init	8	static
-adc.c:17:6:ADC_ReadSensor	8	static
-adc.c:22:10:ADC_GetLight	4	static
-adc.c:26:10:ADC_GetVarResistor	4	static
-adc.c:30:7:ADC_GetVoltage	8	static
-adc.c:34:7:ADC_GetCurrent	8	static
-adc.c:38:6:test_adc	144	static
+adc.c:15:6:adc_init	8	static
+adc.c:20:6:adc_ReadSensor	8	static
+adc.c:25:10:adc_GetLight	4	static
+adc.c:29:10:adc_GetVarResistor	4	static
+adc.c:33:7:adc_GetVoltage	8	static
+adc.c:37:7:adc_GetCurrent	8	static
+adc.c:41:6:adc_Test	144	static

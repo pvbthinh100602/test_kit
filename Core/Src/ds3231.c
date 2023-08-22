@@ -22,6 +22,8 @@ unsigned char status = WAIT_START;
 unsigned char flag_finish = 0;
 unsigned char value  = 0;
 
+uint8_t read_count = 0;
+
 typedef struct {
 	uint8_t hours;
 	uint8_t min;
@@ -35,13 +37,13 @@ typedef struct {
 DS3231_typedef DS3231_TimeNow;
 DS3231_typedef DS3231_TimeSet;
 
-void updateTime(){
+void rtc_UpdateTime(){
 	HAL_UART_Transmit(&huart2, &start, 1, 10);
 	while(!flag_finish);
 	flag_finish = 0;
 }
 
-void fsm_GetTime(){
+void rtc_fsm_get_time(){
 	switch (status) {
 		case WAIT_START:
 			if(receive_buffer2 == '!') status = GET_HOUR;
@@ -81,11 +83,11 @@ void fsm_GetTime(){
 
 
 
-void ds3231_init(){
+void rtc_init(){
 	tranBuffer[0] = DEC2BCD(00);
 	tranBuffer[1] = DEC2BCD(9);
 	tranBuffer[2] = DEC2BCD(10);
-	updateTime();
+	rtc_UpdateTime();
 	tranBuffer[3] = DEC2BCD(5);
 	tranBuffer[4] = DEC2BCD(3);
 	tranBuffer[5] = DEC2BCD(8);
@@ -93,15 +95,18 @@ void ds3231_init(){
 	HAL_I2C_Mem_Write_IT(&hi2c1, DS3231_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, tranBuffer, 7);
 }
 
-void time_display(){
+void rtc_Display7Seg(){
 	  led7Set1Digit(DS3231_TimeNow.hours/10, 1);
 	  led7Set1Digit(DS3231_TimeNow.hours%10, 2);
 	  led7Set1Digit(DS3231_TimeNow.min/10, 3);
 	  led7Set1Digit(DS3231_TimeNow.min%10, 4);
 }
 
-void read_time(){
-	HAL_I2C_Mem_Read_IT(&hi2c1, DS3231_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, revBuffer, 7);
+void rtc_Read(){
+	read_count = (read_count + 1)%20;
+	if(read_count == 0){
+		HAL_I2C_Mem_Read_IT(&hi2c1, DS3231_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, revBuffer, 7);
+	}
 }
 
 void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c) {
@@ -115,4 +120,16 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c) {
 		DS3231_TimeNow.month = BCD2DEC(revBuffer[5]);
 		DS3231_TimeNow.year = BCD2DEC(revBuffer[6]);
 	}
+}
+
+uint8_t rtc_GetHour(){
+	return DS3231_TimeNow.hours;
+}
+
+uint8_t rtc_GetMin(){
+	return DS3231_TimeNow.min;
+}
+
+uint8_t rtc_GetSec(){
+	return DS3231_TimeNow.sec;
 }

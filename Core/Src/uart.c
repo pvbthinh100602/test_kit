@@ -21,7 +21,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 		HAL_UART_Receive_IT(&huart1, &receive_buffer1, 1);
 	}
 	if(huart->Instance == USART2){
-		fsm_GetTime();
+		rtc_fsm_get_time();
 		HAL_UART_Receive_IT(&huart2, &receive_buffer2, 1);
 		HAL_UART_Transmit(&huart1, &receive_buffer2, 1, 10);
 	}

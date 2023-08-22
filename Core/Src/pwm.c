@@ -13,15 +13,15 @@ void pwm_init(){
 	HAL_TIM_PWM_Start(&htim13, TIM_CHANNEL_1);
 }
 
-void setDutyCycle(unsigned char value){
+void pwm_SetDutyCycle(unsigned char value){
 	__HAL_TIM_SET_COMPARE(&htim13,TIM_CHANNEL_1,value);
 }
 
-void test_pwm(){
+void pwm_Test(){
 	if(button_count[0] == 1){
 		if(pwm == 0) pwm = 5;
 		else if(pwm == 5) pwm = 9;
 		else pwm = 0;
 	}
-	setDutyCycle(pwm);
+	pwm_SetDutyCycle(pwm);
 }

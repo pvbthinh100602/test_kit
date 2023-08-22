@@ -11,6 +11,6 @@
 #include "global.h"
 
 void pwm_init();
-void test_pwm();
-
+void pwm_Test();
+void pwm_SetDutyCycle(unsigned char value);
 #endif /* INC_PWM_H_ */

@@ -17,19 +17,23 @@ void timer_init(){
 
 int flag_timer1 = 0, flag_timer2 = 0, flag_timer3 = 0;
 int timer1_counter = 0, timer2_counter = 0, timer3_counter = 0;
+int timer1_MUL = 0, timer2_MUL = 0, timer3_MUL = 0;
 
 void setTimer1(int duration){
-	timer1_counter = 1000;
+	timer1_MUL = duration/TIMER_CYCLE;
+	timer1_counter = timer1_MUL;
 	flag_timer1 = 0;
 }
 
 void setTimer2(int duration){
-	timer2_counter = duration/TIMER_CYCLE;
+	timer2_MUL = duration/TIMER_CYCLE;
+	timer2_counter = timer2_MUL;
 	flag_timer2 = 0;
 }
 
 void setTimer3(int duration){
-	timer3_counter = duration/TIMER_CYCLE;
+	timer3_MUL = duration/TIMER_CYCLE;
+	timer3_counter = timer3_MUL;
 	flag_timer3 = 0;
 }
 
@@ -37,21 +41,30 @@ void setTimer3(int duration){
 void timerRun(){
 	if(timer1_counter > 0){
 		timer1_counter--;
-		if(timer1_counter == 0) flag_timer1 = 1;
+		if(timer1_counter == 0) {
+			flag_timer1 = 1;
+			timer1_counter = timer1_MUL;
+		}
 	}
 
-	if(timer2_counter > 0){
-		timer2_counter--;
-		if(timer2_counter == 0) flag_timer2 = 1;
-	}
 	if(timer3_counter > 0){
 		timer3_counter--;
-		if(timer3_counter == 0) flag_timer3 = 1;
+		if(timer3_counter == 0) {
+			flag_timer3 = 1;
+			timer3_counter = timer3_MUL;
+		}
 	}
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim->Instance == TIM2){
+		if(timer2_counter > 0){
+			timer2_counter--;
+			if(timer2_counter == 0) {
+				flag_timer2 = 1;
+				timer2_counter = timer2_MUL;
+			}
+		}
 		timerRun();
 		led7Scan();
 	}
