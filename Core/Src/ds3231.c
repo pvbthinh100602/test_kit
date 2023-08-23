@@ -84,15 +84,15 @@ void rtc_fsm_get_time(){
 
 
 void rtc_init(){
-	tranBuffer[0] = DEC2BCD(00);
-	tranBuffer[1] = DEC2BCD(9);
-	tranBuffer[2] = DEC2BCD(10);
-	rtc_UpdateTime();
-	tranBuffer[3] = DEC2BCD(5);
-	tranBuffer[4] = DEC2BCD(3);
-	tranBuffer[5] = DEC2BCD(8);
-	tranBuffer[6] = DEC2BCD(23);
-	HAL_I2C_Mem_Write_IT(&hi2c1, DS3231_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, tranBuffer, 7);
+//	tranBuffer[0] = DEC2BCD(00);
+//	tranBuffer[1] = DEC2BCD(9);
+//	tranBuffer[2] = DEC2BCD(10);
+//	rtc_UpdateTime();
+//	tranBuffer[3] = DEC2BCD(5);
+//	tranBuffer[4] = DEC2BCD(3);
+//	tranBuffer[5] = DEC2BCD(8);
+//	tranBuffer[6] = DEC2BCD(23);
+//	HAL_I2C_Mem_Write_IT(&hi2c1, DS3231_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, tranBuffer, 7);
 }
 
 void rtc_Display7Seg(){

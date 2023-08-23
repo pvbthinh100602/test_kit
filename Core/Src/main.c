@@ -162,7 +162,7 @@ int main(void)
 	  button_Scan();
 	  adc_Test();
 	  LCD_Fill(0, 120, lcddev.width, 140, WHITE);
-	  LCD_ShowString(hello_index,120,"Hello",BLUE,BLUE,16,1);
+	  LCD_ShowString(hello_index,120,"Welcome",BLUE,BLUE,16,1);
 	  hello_index = (hello_index+1)%lcddev.width;
 	  output_Test();
 	  rtc_Display7Seg();

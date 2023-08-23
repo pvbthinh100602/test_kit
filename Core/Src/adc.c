@@ -35,7 +35,7 @@ float adc_GetVoltage(){
 }
 
 float adc_GetCurrent(){
-	return (((float)adcReceive[3]*3.235)/(4095*0.647)-2.5)*5/2.5;
+	return (((float)adcReceive[3]*3.3)/(4095*0.647)-2.5)*5/2.5;
 }
 
 void adc_Test(){

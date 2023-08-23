@@ -3448,5 +3448,5 @@ void LcdShowOne(){
 	  DrawTestPage("Arm Kit");
 	  Gui_StrCenter(0,30,"BKIT HARDWARE CLUB",BRRED,RED,16,1);
 	  LCD_ShowPicture(70,170,97,100,gImage_bk);
-	  LCD_ShowPicture(0,150,60,60,gImage_dino);
+//	  LCD_ShowPicture(0,150,60,60,gImage_dino);
 }

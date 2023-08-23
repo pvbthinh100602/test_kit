@@ -1,6 +1,6 @@
 ds3231.c:40:6:rtc_UpdateTime	8	static
 ds3231.c:46:6:rtc_fsm_get_time	8	static
-ds3231.c:86:6:rtc_init	16	static
+ds3231.c:86:6:rtc_init	4	static
 ds3231.c:98:6:rtc_Display7Seg	8	static
 ds3231.c:105:6:rtc_Read	16	static
 ds3231.c:112:6:HAL_I2C_MemRxCpltCallback	16	static
