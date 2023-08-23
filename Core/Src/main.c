@@ -90,11 +90,11 @@ void init_system();
 /* USER CODE BEGIN 0 */
 void DrawTestPage(uint8_t *str)
 {
-	LCD_Fill(0,0,lcddev.width,20,BLUE);
-	LCD_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
-	Gui_StrCenter(0,2,str,WHITE,BLUE,16,1);
-	Gui_StrCenter(0,lcddev.height-18,"Test page",WHITE,BLUE,16,1);
-	LCD_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
+	lcd_Fill(0,0,lcddev.width,20,BLUE);
+	lcd_Fill(0,lcddev.height-20,lcddev.width,lcddev.height,BLUE);
+	lcd_StrCenter(0,2,str,WHITE,BLUE,16,1);
+	lcd_StrCenter(0,lcddev.height-18,"Test page",WHITE,BLUE,16,1);
+	lcd_Fill(0,20,lcddev.width,lcddev.height-20,BLACK);
 }
 /* USER CODE END 0 */
 
@@ -149,8 +149,7 @@ int main(void)
 
 
 //  HAL_UART_Transmit(&huart1, (void*)s, sprintf(s, "%d:%d:%d", getHour(), getMin(), getSec()), 10);
-  int hello_index = 0;
-  LcdShowOne();
+  lcd_ShowOne();
   while (1)
   {
     /* USER CODE END WHILE */
@@ -161,17 +160,11 @@ int main(void)
 	  rtc_Read();
 	  button_Scan();
 	  adc_Test();
-	  LCD_Fill(0, 120, lcddev.width, 140, WHITE);
-	  LCD_ShowString(hello_index,120,"Welcome",BLUE,BLUE,16,1);
-	  hello_index = (hello_index+1)%lcddev.width;
+	  lcd_Test();
 	  output_Test();
 	  rtc_Display7Seg();
 	  button_Test();
 	  pwm_Test();
-	  if(flag_timer1){
-		  flag_timer1 = 0;
-		  LcdTest();
-	  }
   }
   /* USER CODE END 3 */
 }
@@ -754,10 +747,10 @@ void output_Test(){
 		HAL_GPIO_TogglePin(OUTPUT_Y1_GPIO_Port, OUTPUT_Y1_Pin);
 	}
 	if(button_count[3] == 1){
-		Set_Dir(DFT_SCAN_DIR);
+		lcd_SetDir(DFT_SCAN_DIR);
 		LCD_WR_REG(0x36);    // Memory Access Control
 		LCD_WR_DATA(0x08|DFT_SCAN_DIR);
-		LCD_Clear(BLACK);
+		lcd_Clear(BLACK);
 	}
 }
 
@@ -768,7 +761,7 @@ void init_system(){
 	led7_init();
 	adc_init();
 	uart_init();
-	LCD_Init();
+	lcd_init();
 	rtc_init();
 	HAL_GPIO_WritePin(DEBUG_LED_GPIO_Port, DEBUG_LED_Pin, 1);
 }

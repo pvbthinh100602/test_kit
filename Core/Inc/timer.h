@@ -17,7 +17,6 @@ extern int flag_timer1, flag_timer2, flag_timer3;
 void setTimer1(int duration);
 void setTimer2(int duration);
 void setTimer3(int duration);
-void timerRun();
 void timer_init();
 
 #endif /* INC_TIMER_H_ */

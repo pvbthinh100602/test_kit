@@ -37,7 +37,7 @@ Core/Src/lcd.o: ../Core/Src/lcd.c ../Core/Inc/lcd.h ../Core/Inc/global.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/led7.h ../Core/Inc/timer.h ../Core/Inc/button.h \
  ../Core/Inc/dht11.h ../Core/Inc/ds3231.h ../Core/Inc/uart.h \
- ../Core/Inc/utils.h
+ ../Core/Inc/utils.h ../Core/Inc/lcdfont.h
 
 ../Core/Inc/lcd.h:
 
@@ -130,3 +130,5 @@ Core/Src/lcd.o: ../Core/Src/lcd.c ../Core/Inc/lcd.h ../Core/Inc/global.h \
 ../Core/Inc/uart.h:
 
 ../Core/Inc/utils.h:
+
+../Core/Inc/lcdfont.h:

@@ -45,8 +45,8 @@ void adc_Test(){
 		char msg[100];
 		HAL_UART_Transmit(&huart1, (void*)msg, sprintf(msg, "Light: %ld, VarResistor: %ld, Voltage: %.2f, Current: %.4f\n", adc_GetLight(), adc_GetVarResistor(), adc_GetVoltage(), adc_GetCurrent()), 10);
 		sprintf(msg, "Vol: %.2fV, Cur: %.2fmA", adc_GetVoltage(), adc_GetCurrent()*1000);
-		LCD_Fill(0, 100, lcddev.width, 120, BLACK);
-		Gui_StrCenter(0,100,msg,WHITE,BLUE,16,1);
+		lcd_Fill(0, 100, lcddev.width, 120, BLACK);
+		lcd_StrCenter(0,100,msg,WHITE,BLUE,16,1);
 	}
 
 }

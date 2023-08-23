@@ -37,25 +37,6 @@ void setTimer3(int duration){
 	flag_timer3 = 0;
 }
 
-
-void timerRun(){
-	if(timer1_counter > 0){
-		timer1_counter--;
-		if(timer1_counter == 0) {
-			flag_timer1 = 1;
-			timer1_counter = timer1_MUL;
-		}
-	}
-
-	if(timer3_counter > 0){
-		timer3_counter--;
-		if(timer3_counter == 0) {
-			flag_timer3 = 1;
-			timer3_counter = timer3_MUL;
-		}
-	}
-}
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim->Instance == TIM2){
 		if(timer2_counter > 0){
@@ -65,7 +46,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 				timer2_counter = timer2_MUL;
 			}
 		}
-		timerRun();
 		led7_Scan();
 	}
 }
